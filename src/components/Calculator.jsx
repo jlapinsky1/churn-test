@@ -167,16 +167,16 @@ export default function Calculator({ values, onChange, onCalculate }) {
           className="w-full py-4 font-bold text-sm text-white transition-all duration-200"
           style={{
             background: arr && churn
-              ? 'linear-gradient(135deg, #dc2626, #b91c1c)'
+              ? '#7f1d1d'
               : 'rgba(255,255,255,0.06)',
             color: arr && churn ? '#fff' : 'rgba(255,255,255,0.25)',
             cursor: arr && churn ? 'pointer' : 'not-allowed',
-            boxShadow: arr && churn ? '0 4px 24px rgba(220,38,38,0.4)' : 'none',
+            boxShadow: arr && churn ? '0 4px 20px rgba(127,29,29,0.5)' : 'none',
             borderRadius: '8px',
             letterSpacing: '0.02em',
           }}
         >
-          {arr && churn ? '⚠ CALCULATE MY EXPOSURE →' : 'Enter ARR and Churn Rate to Continue'}
+          {arr && churn ? 'CALCULATE MY EXPOSURE' : 'Enter ARR and Churn Rate to Continue'}
         </button>
       </div>
     </motion.div>
