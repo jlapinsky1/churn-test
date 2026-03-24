@@ -3,12 +3,12 @@ import { motion } from 'framer-motion'
 export default function Hero() {
   return (
     <section className="relative text-center px-6 pt-24 pb-16 overflow-hidden">
-      {/* Glow orb */}
+      {/* Red/amber war-room glow */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[280px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, rgba(124,58,237,0.18) 0%, transparent 70%)',
-          filter: 'blur(40px)',
+          background: 'radial-gradient(ellipse at center, rgba(220,38,38,0.12) 0%, rgba(245,158,11,0.06) 50%, transparent 75%)',
+          filter: 'blur(50px)',
         }}
       />
 
@@ -17,22 +17,34 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-400 text-xs font-medium mb-8 tracking-wide uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-          Revenue Intelligence
+        {/* Alert badge */}
+        <div
+          className="inline-flex items-center gap-2 px-3 py-1 mb-8 text-xs font-semibold tracking-widest uppercase"
+          style={{
+            background: 'rgba(220,38,38,0.1)',
+            border: '1px solid rgba(220,38,38,0.35)',
+            borderRadius: '4px',
+            color: '#f87171',
+          }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+          NRR Protection · CFO / CRO Intelligence
         </div>
 
         <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight max-w-3xl mx-auto">
-          How Much Revenue Is Your{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-300">
-            Support Data
-          </span>{' '}
-          Hiding?
+          Stop the Bleeding.{' '}
+          <span
+            className="text-transparent bg-clip-text"
+            style={{ backgroundImage: 'linear-gradient(90deg, #fbbf24, #f97316)' }}
+          >
+            Protect Your NRR.
+          </span>
         </h1>
 
-        <p className="mt-6 text-base md:text-lg text-gray-400 max-w-xl mx-auto leading-relaxed">
-          Most SaaS companies lose 25% of preventable churn because the signal
-          was buried in their support queue. Run the numbers below.
+        <p className="mt-6 text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: '#9ca3af' }}>
+          In a zero-growth economy, your support inbox is your most valuable financial
+          asset. See how much revenue is currently leaking through your{' '}
+          <span style={{ color: '#fbbf24', fontStyle: 'italic' }}>"Silent Churn" gap.</span>
         </p>
       </motion.div>
     </section>

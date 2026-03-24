@@ -4,6 +4,7 @@ import Hero from './components/Hero'
 import Calculator from './components/Calculator'
 import Results from './components/Results'
 import EmailCapture from './components/EmailCapture'
+import BenchmarkTicker from './components/BenchmarkTicker'
 
 export default function App() {
   const [values, setValues] = useState({ arr: '', churn: 10, tickets: '' })
@@ -43,10 +44,12 @@ export default function App() {
         )}
       </AnimatePresence>
 
+      <BenchmarkTicker />
+
       {/* Footer */}
-      <div className="text-center pb-12 pt-8">
-        <p className="text-xs text-gray-700">
-          Built to pressure-test demand for a churn-prediction product. Data stays local.
+      <div className="text-center pb-12" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '24px' }}>
+        <p className="text-xs" style={{ color: '#374151' }}>
+          Revenue Protection Intelligence · Data stays local · Built on 15 years of SaaS support signals
         </p>
       </div>
     </div>

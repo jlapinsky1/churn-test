@@ -11,8 +11,17 @@ function formatCurrency(val) {
   }).format(num)
 }
 
+// Churn rate color: green → amber → red
+function churnColor(churn) {
+  if (churn <= 8) return '#4ade80'
+  if (churn <= 15) return '#fbbf24'
+  if (churn <= 25) return '#f97316'
+  return '#ef4444'
+}
+
 export default function Calculator({ values, onChange, onCalculate }) {
   const { arr, churn, tickets } = values
+  const sliderColor = churnColor(churn)
 
   function handleArrChange(e) {
     const raw = e.target.value.replace(/[^0-9]/g, '')
@@ -21,13 +30,16 @@ export default function Calculator({ values, onChange, onCalculate }) {
 
   function handleArrBlur(e) {
     const raw = e.target.value.replace(/[^0-9]/g, '')
-    if (raw) {
-      e.target.value = formatCurrency(raw)
-    }
+    if (raw) e.target.value = formatCurrency(raw)
   }
 
   function handleArrFocus(e) {
     e.target.value = arr || ''
+  }
+
+  const inputBase = {
+    background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(255,255,255,0.1)',
   }
 
   return (
@@ -38,26 +50,25 @@ export default function Calculator({ values, onChange, onCalculate }) {
       className="max-w-2xl mx-auto px-6"
     >
       <div
-        className="rounded-2xl p-8 border"
         style={{
-          background: 'rgba(255,255,255,0.03)',
-          borderColor: 'rgba(255,255,255,0.08)',
-          backdropFilter: 'blur(12px)',
+          background: '#111111',
+          border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: '12px',
         }}
+        className="p-8"
       >
-        <h2 className="text-white font-semibold text-xl mb-8">
-          Your Numbers
-        </h2>
+        <div className="flex items-center gap-3 mb-8">
+          <div style={{ width: 3, height: 20, background: '#f97316', borderRadius: 2 }} />
+          <h2 className="text-white font-semibold text-xl">Exposure Assessment</h2>
+        </div>
 
         {/* ARR */}
         <div className="mb-8">
-          <label className="block text-sm font-medium text-gray-400 mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: '#9ca3af' }}>
             Annual Recurring Revenue (ARR)
           </label>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
-              $
-            </span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm" style={{ color: '#6b7280' }}>$</span>
             <input
               type="text"
               inputMode="numeric"
@@ -66,14 +77,11 @@ export default function Calculator({ values, onChange, onCalculate }) {
               onChange={handleArrChange}
               onBlur={handleArrBlur}
               onFocus={handleArrFocus}
-              className="w-full pl-8 pr-4 py-3.5 rounded-xl text-white text-sm outline-none transition-all"
-              style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-              }}
+              className="w-full pl-8 pr-4 py-3.5 text-white text-sm outline-none transition-all"
+              style={{ ...inputBase, borderRadius: '8px' }}
               onFocusCapture={(e) => {
-                e.target.style.borderColor = 'rgba(124,58,237,0.6)'
-                e.target.style.boxShadow = '0 0 0 3px rgba(124,58,237,0.12)'
+                e.target.style.borderColor = 'rgba(251,191,36,0.5)'
+                e.target.style.boxShadow = '0 0 0 3px rgba(251,191,36,0.08)'
               }}
               onBlurCapture={(e) => {
                 e.target.style.borderColor = 'rgba(255,255,255,0.1)'
@@ -86,7 +94,7 @@ export default function Calculator({ values, onChange, onCalculate }) {
         {/* Churn slider */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-3">
-            <label className="text-sm font-medium text-gray-400">
+            <label className="text-sm font-medium" style={{ color: '#9ca3af' }}>
               Annual Gross Churn Rate
             </label>
             <div className="flex items-center gap-2">
@@ -97,41 +105,41 @@ export default function Calculator({ values, onChange, onCalculate }) {
                 step={0.5}
                 value={churn}
                 onChange={(e) => onChange({ churn: Math.min(50, Math.max(0, parseFloat(e.target.value) || 0)) })}
-                className="w-16 text-center py-1 px-2 rounded-lg text-white text-sm outline-none"
+                className="w-16 text-center py-1 px-2 text-white text-sm outline-none font-semibold"
                 style={{
-                  background: 'rgba(124,58,237,0.15)',
-                  border: '1px solid rgba(124,58,237,0.4)',
+                  background: 'rgba(239,68,68,0.1)',
+                  border: `1px solid ${sliderColor}66`,
+                  borderRadius: '6px',
+                  color: sliderColor,
                 }}
               />
-              <span className="text-violet-400 text-sm font-medium">%</span>
+              <span className="text-sm font-medium" style={{ color: sliderColor }}>%</span>
             </div>
           </div>
-          <div className="relative">
-            <input
-              type="range"
-              min={0}
-              max={50}
-              step={0.5}
-              value={churn}
-              onChange={(e) => onChange({ churn: parseFloat(e.target.value) })}
-              style={{
-                background: `linear-gradient(to right, #7c3aed ${(churn / 50) * 100}%, #2a2a2a ${(churn / 50) * 100}%)`,
-              }}
-            />
-          </div>
-          <div className="flex justify-between text-xs text-gray-600 mt-1.5">
-            <span>0%</span>
-            <span>25%</span>
-            <span>50%</span>
+          <input
+            type="range"
+            min={0}
+            max={50}
+            step={0.5}
+            value={churn}
+            onChange={(e) => onChange({ churn: parseFloat(e.target.value) })}
+            style={{
+              background: `linear-gradient(to right, ${sliderColor} ${(churn / 50) * 100}%, #2a2a2a ${(churn / 50) * 100}%)`,
+            }}
+          />
+          <div className="flex justify-between text-xs mt-1.5" style={{ color: '#4b5563' }}>
+            <span>Healthy (0%)</span>
+            <span style={{ color: '#fbbf24' }}>Market Avg (14%)</span>
+            <span style={{ color: '#ef4444' }}>Critical (50%)</span>
           </div>
         </div>
 
         {/* Support tickets */}
         <div className="mb-10">
-          <label className="block text-sm font-medium text-gray-400 mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: '#9ca3af' }}>
             Monthly Support Ticket Volume
-            <span className="ml-2 text-xs text-gray-600 font-normal">
-              (used to personalize your signal score)
+            <span className="ml-2 text-xs font-normal" style={{ color: '#4b5563' }}>
+              (calibrates your Silent Churn Signal™)
             </span>
           </label>
           <input
@@ -140,14 +148,11 @@ export default function Calculator({ values, onChange, onCalculate }) {
             placeholder="e.g. 450"
             value={tickets}
             onChange={(e) => onChange({ tickets: e.target.value })}
-            className="w-full px-4 py-3.5 rounded-xl text-white text-sm outline-none transition-all"
-            style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-            }}
+            className="w-full px-4 py-3.5 text-white text-sm outline-none transition-all"
+            style={{ ...inputBase, borderRadius: '8px' }}
             onFocus={(e) => {
-              e.target.style.borderColor = 'rgba(124,58,237,0.6)'
-              e.target.style.boxShadow = '0 0 0 3px rgba(124,58,237,0.12)'
+              e.target.style.borderColor = 'rgba(251,191,36,0.5)'
+              e.target.style.boxShadow = '0 0 0 3px rgba(251,191,36,0.08)'
             }}
             onBlur={(e) => {
               e.target.style.borderColor = 'rgba(255,255,255,0.1)'
@@ -159,17 +164,19 @@ export default function Calculator({ values, onChange, onCalculate }) {
         <button
           onClick={onCalculate}
           disabled={!arr || !churn}
-          className="w-full py-4 rounded-xl font-semibold text-sm text-white transition-all duration-200"
+          className="w-full py-4 font-bold text-sm text-white transition-all duration-200"
           style={{
             background: arr && churn
-              ? 'linear-gradient(135deg, #7c3aed, #6d28d9)'
+              ? 'linear-gradient(135deg, #dc2626, #b91c1c)'
               : 'rgba(255,255,255,0.06)',
-            color: arr && churn ? '#fff' : 'rgba(255,255,255,0.3)',
+            color: arr && churn ? '#fff' : 'rgba(255,255,255,0.25)',
             cursor: arr && churn ? 'pointer' : 'not-allowed',
-            boxShadow: arr && churn ? '0 4px 24px rgba(124,58,237,0.35)' : 'none',
+            boxShadow: arr && churn ? '0 4px 24px rgba(220,38,38,0.4)' : 'none',
+            borderRadius: '8px',
+            letterSpacing: '0.02em',
           }}
         >
-          Calculate My Revenue at Risk →
+          {arr && churn ? '⚠ CALCULATE MY EXPOSURE →' : 'Enter ARR and Churn Rate to Continue'}
         </button>
       </div>
     </motion.div>
